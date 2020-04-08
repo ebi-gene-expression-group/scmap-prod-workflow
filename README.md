@@ -1,6 +1,6 @@
 # scmap-prod-workflow
 
-Workflow for generating predicted labels on a library of pre-built scmap indices. Run as a part of [control workflow](https://github.com/ebi-gene-expression-group/cell-types-prod-control-workflow) that generates predictions using a variety of tools.  
+Workflow for generating predicted labels on a library of pre-built [scmap](https://github.com/ebi-gene-expression-group/scmap-cli) indices. Run as a part of [control workflow](https://github.com/ebi-gene-expression-group/cell-types-prod-control-workflow) that generates predictions using a variety of tools.  
 
 This workflow relies on [dropletutils-scripts](https://github.com/ebi-gene-expression-group/dropletutils-scripts) to initialise an SCE object from input expression data. This object is then used as an input to the classifiers. A list of prediction tables in standardised format is created as output.
 
