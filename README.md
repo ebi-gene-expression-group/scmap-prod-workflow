@@ -11,6 +11,9 @@ Expression data are supplied as stadnard 10X-type directories that must contain 
 
 Then run the following commands:
 
+```
 conda install nextflow 
 nextflow run main.nf -profile <profile> 
+```
+
 The -profile flag can be set to 'local' or 'cluster' depending on where you're running the workflow.
