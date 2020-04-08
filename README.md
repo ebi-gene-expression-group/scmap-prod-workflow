@@ -7,7 +7,7 @@ This workflow relies on [dropletutils-scripts](https://github.com/ebi-gene-expre
 ### Running the workflow 
 To run the workflow, you will need to have [nextflow](https://www.nextflow.io/) installed. It is recommended to run the workflow in a clean conda environment. Specify the input parameters in `nextflow.config`.
 
-Expression data are supplied as stadnard 10X-type directories that must contain three files: `matrix.mtx`, `genes.tsv`, and `barcodes.tsv`. Specify the path to this directory in the `query_10x_dir` parameter in config file.
+Expression data are supplied as stadnard 10X-type directories that must contain three files: `matrix.mtx`, `genes.tsv`, and `barcodes.tsv`. Specify the path to this directory in the `query_10x_dir` parameter in config file. Specify `projection_method` parameter in config as 'cell' or 'cluster' to run cell-to-cell or cell-to-cluster projections, respectively. 
 
 Then run the following commands:
 
