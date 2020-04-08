@@ -16,4 +16,4 @@ conda install nextflow
 nextflow run main.nf -profile <profile> 
 ```
 
-The -profile flag can be set to 'local' or 'cluster' depending on where you're running the workflow.
+The `-profile` flag can be set to 'local' or 'cluster' depending on where you're running the workflow.
