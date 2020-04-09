@@ -5,5 +5,5 @@ channels:
   - defaults
   - ebi-gene-expression-group
 dependencies:
-  - cell-types-analysis=0.0.4
+  - cell-types-analysis=0.0.8
   - java-jdk

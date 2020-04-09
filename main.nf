@@ -66,9 +66,11 @@ process run_scmap_cluster {
     file(query_sce_clust) from QUERY_SCE_CLUST.first()
    
   output:
-     set val(acc), file("${acc}_cluster_proj.txt") into CLUSTER_PROJ
+     set env(tool), val(acc), file("${acc}_cluster_proj.txt") into CLUSTER_PROJ
 
   """
+  tool="scmap-cluster"
+
   scmap-scmap-cluster.R\
         --index-object-file ${scmap_clust_idx}\
         --projection-object-file ${query_sce_clust}\
@@ -90,9 +92,10 @@ process run_scmap_cell {
         file(query_sce_cell) from QUERY_SCE_CELL.first()
 
     output:
-        set val(acc), file("${acc}_cell_proj.txt") into CELL_PROJ
+        set env(tool), val(acc), file("${acc}_cell_proj.txt") into CELL_PROJ
 
     """
+    tool="scmap-cell"
     scmap-scmap-cell.R\
                  --index-object-file ${scmap_cell_idx}\
                  --projection-object-file ${query_sce_cell}\
@@ -115,17 +118,23 @@ process get_final_tables {
     memory { 16.GB * task.attempt }
 
     input:
-        set val(acc), file(scmap_proj_table) from PROJECTION_OUTPUT
+        set val(tool), val(acc), file(scmap_proj_table) from PROJECTION_OUTPUT
 
     output:
         file("${acc}_final_labs.tsv") into STD_OUTPUTS
+        val(tool) into TOOL
 
     """
     scmap_get_std_output.R\
                 --predictions-file ${scmap_proj_table}\
-                --output-table ${acc}_final_labs.tsv\
+                --output-table ${acc}_labs.tsv\
                 --include-scores
 
+
+    # add metadata fields to output table
+    echo "# dataset ${acc}" > ${acc}_final_labs.tsv
+    echo "# tool ${tool}" >> ${acc}_final_labs.tsv
+    cat ${acc}_labs.tsv >> ${acc}_final_labs.tsv
     """
 }
 
@@ -145,19 +154,22 @@ process scmap_combine_labels{
     """
 }
 
+TOOL = TOOL.first()
 process select_top_labs {
     conda "${baseDir}/envs/cell_types_analysis.yaml" 
     publishDir "${params.results_dir}", mode: 'copy'
 
     input:
         file(labels_dir) from SCMAP_LABELS_DIR
+        val(tool) from TOOL
     output:
-        file("scpred_output.txt") into SCMAP_TOP_LABS
+        file("${tool}_output.tsv") into SCMAP_TOP_LABS
 
     """
     combine_tool_outputs.R\
         --input-dir ${labels_dir}\
+        --top-labels-num 2\
         --scores\
-        --output-table scpred_output.txt
+        --output-table ${tool}_combined_output.tsv
     """
-
+}
