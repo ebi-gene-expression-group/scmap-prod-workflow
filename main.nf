@@ -163,7 +163,7 @@ process select_top_labs {
         file(labels_dir) from SCMAP_LABELS_DIR
         val(tool) from TOOL
     output:
-        file("${tool}_output.tsv") into SCMAP_TOP_LABS
+        file("${tool}_combined_output.tsv") into SCMAP_TOP_LABS
 
     """
     combine_tool_outputs.R\
